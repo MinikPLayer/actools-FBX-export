@@ -224,6 +224,11 @@ namespace AcManager.Pages.Selected {
 
             public static async Task RunExportTo(string objectDirectory, bool exportToFbx)
             {
+                if(exportToFbx)
+                {
+                    Kn5.FbxConverterLocation = PluginsManager.Instance.GetPluginFilename(KnownPlugins.FbxConverter, "FbxConverter.exe");
+                }
+
                 var fileSaveDialog = new SaveFileDialog
                 {
                     FileName = "FILE WILL BE SKIPPED",
@@ -243,7 +248,9 @@ namespace AcManager.Pages.Selected {
                 {
                     var onlyFileName = Path.GetFileNameWithoutExtension(file);
 
-                    var kn5 = Kn5.FromFile(file);
+                    var factory = Kn5Basic.GetFactoryInstance() as Kn5Basic.Factory;
+
+                    var kn5 = factory.FromFile(file) as Kn5Basic;
                     var targetPath = dialogFolder + "\\" + onlyFileName;
                     if (exportToFbx)
                     {
@@ -251,10 +258,19 @@ namespace AcManager.Pages.Selected {
                         {
                             kn5.ExportFbx(targetPath);
                         }
+                        catch(Win32Exception e)
+                        {
+                            var msg = e.Message;
+                            if(e.NativeErrorCode == 2)
+                                msg = "The Autodesk FBX Converter cannot be found. FBX Converter is required to export to FBX.";
+                            
+                            ModernDialog.ShowMessage("Error exporting " + onlyFileName + " to FBX: " + msg, "Export to FBX", MessageBoxButton.OK);
+                            return;
+                        }
                         catch(Exception e)
                         {
                             ModernDialog.ShowMessage("Error exporting " + onlyFileName + " to FBX: " + e.Message, "Export to FBX", MessageBoxButton.OK);
-                            break;
+                            return;
                         }
                         
                     }

@@ -1192,7 +1192,7 @@ namespace AcTools.Kn5File {
             return new Factory();
         }
 
-        private class Factory : IKn5Factory {
+        public class Factory : IKn5Factory {
             private sealed class Kn5Reader : ReadAheadBinaryReader, IKn5Reader {
                 public Kn5Reader(string filename, bool withoutHeader = false) : base(filename) {
                     if (!withoutHeader && new string(ReadChars(6)) != "sc6969") {
