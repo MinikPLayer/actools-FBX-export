@@ -42,6 +42,11 @@
         <Separator />
         <Button Content="{x:Static g:AppStrings.Toolbar_CarSkins}" Command="{Binding ManageSkinsCommand}"
             ToolTip="{x:Static g:AppStrings.Toolbar_CarSkins_Tooltip}" />
+        <Separator/>
+        <Button Content="Export to FBX" Command="{Binding ExportToFbxCommand}"
+            ToolTip="Exports selected car to FBX files." />
+        <Button Content="Export to DAE" Command="{Binding ExportToDaeCommand}"
+            ToolTip="Exports selected car to DAE files." />
       </ToolBar>
       <ToolBar Band="1" BandIndex="1">
         <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}"

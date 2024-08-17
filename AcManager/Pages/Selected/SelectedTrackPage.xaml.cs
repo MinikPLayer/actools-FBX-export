@@ -109,6 +109,15 @@ namespace AcManager.Pages.Selected {
                 }
             }
 
+            private AsyncCommand _exportToFbxCommand;
+            public AsyncCommand ExportToFbxCommand => _exportToFbxCommand ??
+                    (_exportToFbxCommand = new AsyncCommand(() => SelectedCarPage_New.ViewModel.RunExportTo(SelectedObject.Location, true)));
+
+            private AsyncCommand _exportToDaeCommand;
+            public AsyncCommand ExportToDaeCommand => _exportToDaeCommand ??
+                    (_exportToDaeCommand = new AsyncCommand(() => SelectedCarPage_New.ViewModel.RunExportTo(SelectedObject.Location, false)));
+
+
             private AsyncCommand _updatePreviewCommand;
 
             public AsyncCommand UpdatePreviewCommand => _updatePreviewCommand ??

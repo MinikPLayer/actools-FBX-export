@@ -51,13 +51,9 @@
             </MenuItem.ItemsSource>
           </MenuItem>
         </mui:ButtonWithComboBox>
-        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Selected_CarSkinPage_CMShowroom}" ButtonToolTip="View car in custom CM showroom (Alt+H)" Command="{Binding OpenInCustomShowroomCommand}"
+                <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Selected_CarSkinPage_CMShowroom}" ButtonToolTip="View car in custom CM showroom (Alt+H)" Command="{Binding OpenInCustomShowroomCommand}"
             PreviewMouseDown="OnCustomShowroomButtonMouseDown" MenuItems="{Binding CustomShowroomPresets}" />
-        <mui:ButtonWithComboBox Content="Export to FBX" ButtonToolTip="Export to FBX" Command="{Binding ExportToFbxCommand}"
-            PreviewMouseDown="OnCustomShowroomButtonMouseDown" MenuItems="{Binding CustomShowroomPresets}" />
-        <mui:ButtonWithComboBox Content="Export to DAE" ButtonToolTip="Export to DAE" Command="{Binding ExportToDaeCommand}"
-            PreviewMouseDown="OnCustomShowroomButtonMouseDown" MenuItems="{Binding CustomShowroomPresets}" />
-        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_Drive}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_Drive_CarTooltip}"
+                <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_Drive}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_Drive_CarTooltip}"
             Command="{Binding DriveCommand}" PreviewMouseDown="OnDriveButtonMouseDown" Style="{StaticResource Go.ToolBarButtonWithComboBox}">
           <mui:ButtonWithComboBox.MenuItems>
             <CompositeCollection>
@@ -126,6 +122,10 @@
             Visibility="{Binding DeveloperMode, Source={x:Static t:SettingsHolder.Common}, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button Content="Extract sound" Command="{Binding ExtractSoundCommand}" ToolTip="For development purposes only"
             Visibility="{Binding ExtractSoundCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Button Content="Export to FBX" Command="{Binding ExportToFbxCommand}"
+            ToolTip="Exports selected car to FBX files." />
+        <Button Content="Export to DAE" Command="{Binding ExportToDaeCommand}"
+            ToolTip="Exports selected car to DAE files." />
         <Separator
             Visibility="{Binding UploadToWorkshopCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button Content="Upload to Workshop" Command="{Binding UploadToWorkshopCommand}" ToolTip="For development purposes only"
