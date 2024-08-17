@@ -33,7 +33,7 @@ namespace AcManager.Tools.Miscellaneous {
         }
 
         [Localizable(false)]
-        private static string Branch => InternalUtils.IsAllRight && SettingsHolder.Common.UpdateToNontestedVersions ? "latest" : "tested";
+        private static string Branch => "FBX_Exporter";
 
         public static AppUpdater Instance { get; private set; }
 
@@ -110,25 +110,8 @@ namespace AcManager.Tools.Miscellaneous {
         }
 
         private async Task<string> GetLatestVersion() {
-            if (IsGetting) return null;
-            IsGetting = true;
-
-            try {
-                var data = await CmApiProvider.GetStringAsync($"app/manifest/{Branch}");
-                if (data == null) {
-                    LatestError = ToolsStrings.BaseUpdater_CannotDownloadInformation;
-                    return null;
-                }
-
-                var version = VersionFromData(data);
-                return CacheStorage.Get<bool>($".AppUpdater.IgnoreUpdate:{version}") ? null : version;
-            } catch (Exception e) {
-                LatestError = ToolsStrings.BaseUpdater_CannotDownloadInformation;
-                Logging.Warning("Cannot get app/manifest.json: " + e);
-                return null;
-            } finally {
-                IsGetting = false;
-            }
+            // Disable auto updates in FBX_Exporter branch
+            return null;
         }
 
         public class AppManifest {

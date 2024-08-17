@@ -247,7 +247,16 @@ namespace AcManager.Pages.Selected {
                     var targetPath = dialogFolder + "\\" + onlyFileName;
                     if (exportToFbx)
                     {
-                        kn5.ExportFbx(targetPath);
+                        try
+                        {
+                            kn5.ExportFbx(targetPath);
+                        }
+                        catch(Exception e)
+                        {
+                            ModernDialog.ShowMessage("Error exporting " + onlyFileName + " to FBX: " + e.Message, "Export to FBX", MessageBoxButton.OK);
+                            break;
+                        }
+                        
                     }
                     else
                     {
