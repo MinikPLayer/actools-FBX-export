@@ -42,6 +42,8 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using StringBasedFilter;
 using MenuItem = System.Windows.Controls.MenuItem;
+using AcTools.Kn5File;
+using Microsoft.Win32;
 
 #if INCLUDE_WORKSHOP
 using AcManager.Workshop;
@@ -193,6 +195,54 @@ namespace AcManager.Pages.Selected {
                     (_openInCustomShowroomCommand = new AsyncCommand(() => CustomShowroomWrapper.StartAsync(SelectedObject, SelectedObject.SelectedSkin)));
 
             private AsyncCommand _driveCommand;
+
+            private AsyncCommand _exportToFbxCommand;
+            public AsyncCommand ExportToFbxCommand => _exportToFbxCommand ??
+                    (_exportToFbxCommand = new AsyncCommand(() => RunExportTo(true)));
+
+            private AsyncCommand _exportToDaeCommand;
+            public AsyncCommand ExportToDaeCommand => _exportToDaeCommand ??
+                    (_exportToDaeCommand = new AsyncCommand(() => RunExportTo(false)));
+
+
+            public async Task RunExportTo(bool exportToFbx)
+            {
+                var fileSaveDialog = new SaveFileDialog
+                {
+                    FileName = "FILE WILL BE SKIPPED",
+                    Title = "Select where to save the files."
+                };
+                var result = fileSaveDialog.ShowDialog();
+                if (result == null || !result.Value)
+                    return;
+
+                var dialogFolder = Path.GetDirectoryName(fileSaveDialog.FileName);
+
+                var location = SelectedObject.Location;
+                var kn5Files = Directory.EnumerateFiles(location, "*.kn5");
+
+                var count = 0;
+                foreach(var file in kn5Files)
+                {
+                    var onlyFileName = Path.GetFileNameWithoutExtension(file);
+
+                    var kn5 = Kn5.FromFile(file);
+                    var targetPath = dialogFolder + "\\" + onlyFileName;
+                    if(exportToFbx)
+                    {
+                        kn5.ExportFbx(targetPath);
+                    }
+                    else
+                    {
+                        kn5.ExportCollada(targetPath + ".dae");
+                    }
+
+                    count++;
+                }
+
+                // Show success dialog
+                ModernDialog.ShowMessage("Exported " + count + " files.", "Export to " + (exportToFbx ? "FBX" : "DAE"), MessageBoxButton.OK);
+            }
 
             public AsyncCommand DriveCommand => _driveCommand ?? (_driveCommand = new AsyncCommand(async () => {
                 if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ||
